@@ -3,4 +3,4 @@ def adds_numbers (number:int=1) -> int:
     return number + 2
 
 
-print(adds_numbers(200))
+print(adds_numbers(400))
