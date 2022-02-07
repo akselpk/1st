@@ -1,5 +1,6 @@
 git config --global user.name "akselpk"
 git config --global user.email "akselpk41@gmail.com"
+git config -l
 git init
 git add .
 git add -u
