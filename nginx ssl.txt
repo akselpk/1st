@@ -1,0 +1,37 @@
+делаем конфиг: 
+
+
+
+[ req ]
+default_bits       = 2048
+distinguished_name = req_distinguished_name
+req_extensions     = req_ext
+[ req_distinguished_name ]
+countryName                 = RU
+stateOrProvinceName         = Moscow
+localityName               = Moscow
+organizationName           = csp
+commonName                 = reconf.cspfmba.ru
+[ req_ext ]
+subjectAltName = @alt_names
+[alt_names]
+DNS.1   = reconf.cspfmba.ru
+
+ГЕНЕРИМ ДЕФИХЕЛМАНА 
+openssl dhparam -out dh2048.pem 2048
+ГЕНЕРИМ ПРИВАТ КЛЮЧ
+openssl genrsa -out private.key 2048
+ДАЛЕЕ ГЕНЕРИМ ЗАПРОС
+openssl req -out csr.csr -newkey rsa:2048 -nodes -keyout private.key -config crt.conf
+
+ОТПРАВЛЯЕМ ЗАПРОС В УЦ ПОЛУЧАЕМ ОТВЕТ В ВИДЕ ФАЙЛА И ПРОПИСЫВАЕМ В NGINX ТАКИЕ ВОТ СТРОКИ 
+
+
+server {
+    listen 443 ssl http2;
+        server_name reconf.cspfmba.ru;
+
+        ssl_certificate         /etc/ssl/reconf/certnew.cer;
+        ssl_certificate_key /etc/ssl/reconf/private.key;
+        ssl_dhparam /etc/nginx/dh2048.pem;
+
